@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "de734eb8-2740-4f03-b278-976eb7ff2a1c",
+		"name": "PORTAL CAPITOLE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1cd4940-394f-410f-9c36-6dab467ca280",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "es-ES,es;q=0.9,en;q=0.8",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "navigate",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin",
+						"type": "text"
+					},
+					{
+						"key": "Upgrade-Insecure-Requests",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Host",
+						"value": "capitole-ep-prd.azurewebsites.net",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "UserName",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "X-Requested-With",
+							"value": "XMLHttpRequest",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Account/LoginPost",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"Account",
+						"LoginPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CALENDAR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "79986946-64bb-4b77-ab25-c81936e4f02b",
+						"exec": [
+							"",
+							"pm.test(\"Get background-color\", function () {",
+							"const moment = require('moment');",
+							"var year =  moment().format(\"YYYY\");",
+							"var month = moment().format(\"MM\");",
+							"var day = moment().format(\"DD\");",
+							"",
+							"var date = '[id=\\\"tdDay_' + year + '_' + month + '_' + day+\"\\\"]\";",
+							"console.log(date);",
+							"",
+							"responseHTML = cheerio(pm.response.text());",
+							"var style = responseHTML.find(date).attr('style').split('background-color: ', 2)[1];",
+							"var color = style.split(';', 1)[0];",
+							"pm.environment.set(\"color\", color);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Vacations/RenderPlanMap?iRelativeYear=2019",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"Vacations",
+						"RenderPlanMap"
+					],
+					"query": [
+						{
+							"key": "iRelativeYear",
+							"value": "2019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CHECKIN/OUT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7129c2e6-65ac-408a-a9fa-762a14000a73",
+						"exec": [
+							"var color = pm.environment.get(\"color\");",
+							"console.log(pm.globals.get(\"action\"));",
+							"pm.expect(color).to.eql(\"#F3FDFC\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "146626e6-535e-4607-9879-6811730fb4da",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3"
+					},
+					{
+						"key": "Accept-Encoding",
+						"type": "text",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "Accept-Language",
+						"type": "text",
+						"value": "es-ES,es;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "Cache-Control",
+						"type": "text",
+						"value": "no-cache"
+					},
+					{
+						"key": "Connection",
+						"type": "text",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"type": "text",
+						"value": "navigate"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"type": "text",
+						"value": "same-origin"
+					},
+					{
+						"key": "Upgrade-Insecure-Requests",
+						"type": "text",
+						"value": "1"
+					},
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "capitole-ep-prd.azurewebsites.net"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"CompanyCode\":\"CAP\",\n\"MovType\":\"{{action}}\",\n\"TimeClockType\":\"WorkingTime\",\n\"Latitude\":\"41.3907285\",\n\"Longitude\":\"2.1745088999999997\"\n}"
+				},
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeClock/AddTimeClock",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"TimeClock",
+						"AddTimeClock"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

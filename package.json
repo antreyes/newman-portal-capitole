@@ -1,0 +1,22 @@
+{
+  "name": "newman-portal-capitole",
+  "version": "1.0.0",
+  "description": "CAPITOLE EMPLOYEE PORTAL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antreyes/newman-portal-capitole.git"
+  },
+  "author": "Antonio REYES",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antreyes/newman-portal-capitole/issues"
+  },
+  "homepage": "https://github.com/antreyes/newman-portal-capitole#readme",
+  "dependencies": {
+    "newman": "^4.5.6"
+  }
+}
