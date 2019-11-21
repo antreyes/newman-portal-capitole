@@ -131,7 +131,6 @@
 							"var day = moment().format(\"DD\");",
 							"",
 							"var date = '[id=\\\"tdDay_' + year + '_' + month + '_' + day+\"\\\"]\";",
-							"console.log(date);",
 							"",
 							"responseHTML = cheerio(pm.response.text());",
 							"var style = responseHTML.find(date).attr('style').split('background-color: ', 2)[1];",
@@ -141,13 +140,31 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4b730d81-1271-4fd6-abe8-be3a5e02ea6a",
+						"exec": [
+							"const moment = require('moment');",
+							"pm.globals.set(\"relativeYear\",moment().format(\"YYYY\"));"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
 				"url": {
-					"raw": "https://capitole-ep-prd.azurewebsites.net/Vacations/RenderPlanMap?iRelativeYear=2019",
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Vacations/RenderPlanMap?iRelativeYear={{relativeYear}}",
 					"protocol": "https",
 					"host": [
 						"capitole-ep-prd",
@@ -161,7 +178,7 @@
 					"query": [
 						{
 							"key": "iRelativeYear",
-							"value": "2019"
+							"value": "{{relativeYear}}"
 						}
 					]
 				}
@@ -177,7 +194,6 @@
 						"id": "7129c2e6-65ac-408a-a9fa-762a14000a73",
 						"exec": [
 							"var color = pm.environment.get(\"color\");",
-							"console.log(pm.globals.get(\"action\"));",
 							"pm.expect(color).to.eql(\"#F3FDFC\");",
 							""
 						],
