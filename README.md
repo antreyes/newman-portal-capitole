@@ -12,6 +12,7 @@ https://www.npmjs.com/get-npm
 
 ```
 npm install
+npm install -g newman
 ```
 
 ## Usage :wrench:
