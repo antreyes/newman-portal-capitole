@@ -147,22 +147,15 @@
 						"id": "4b730d81-1271-4fd6-abe8-be3a5e02ea6a",
 						"exec": [
 							"const moment = require('moment');",
-							"pm.globals.set(\"relativeYear\",moment().format(\"YYYY\"));"
+							"pm.environment.set(\"relativeYear\",moment().format(\"YYYY\"));"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": []
-				},
 				"url": {
 					"raw": "https://capitole-ep-prd.azurewebsites.net/Vacations/RenderPlanMap?iRelativeYear={{relativeYear}}",
 					"protocol": "https",

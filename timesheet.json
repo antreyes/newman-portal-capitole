@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "a51a2ca5-0509-44ec-9067-7ec70f1d7279",
+		"name": "PORTAL CAPITOLE Timesheet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1cd4940-394f-410f-9c36-6dab467ca280",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "es-ES,es;q=0.9,en;q=0.8",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "navigate",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin",
+						"type": "text"
+					},
+					{
+						"key": "Upgrade-Insecure-Requests",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Host",
+						"value": "capitole-ep-prd.azurewebsites.net",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "UserName",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "X-Requested-With",
+							"value": "XMLHttpRequest",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Account/LoginPost",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"Account",
+						"LoginPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CALENDAR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "79986946-64bb-4b77-ab25-c81936e4f02b",
+						"exec": [
+							"",
+							"pm.test(\"Get background-color\", function () {",
+							"const moment = require('moment');",
+							"var year =  moment().format(\"YYYY\");",
+							"var month = moment().format(\"MM\");",
+							"var day = moment().format(\"DD\");",
+							"",
+							"var date = '[id=\\\"tdDay_' + year + '_' + month + '_' + day+\"\\\"]\";",
+							"",
+							"responseHTML = cheerio(pm.response.text());",
+							"var style = responseHTML.find(date).attr('style').split('background-color: ', 2)[1];",
+							"var color = style.split(';', 1)[0];",
+							"pm.environment.set(\"color\", color);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4b730d81-1271-4fd6-abe8-be3a5e02ea6a",
+						"exec": [
+							"const moment = require('moment');",
+							"pm.environment.set(\"relativeYear\",moment().format(\"YYYY\"));",
+							"pm.globals.set(\"currentDate\",moment().format(\"DD/MM/YYYY\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Vacations/RenderPlanMap?iRelativeYear={{relativeYear}}",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"Vacations",
+						"RenderPlanMap"
+					],
+					"query": [
+						{
+							"key": "iRelativeYear",
+							"value": "{{relativeYear}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET USER DATA",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e07af79d-1cf2-48a1-8f6b-c6be44ac417c",
+						"exec": [
+							"pm.test(\"Get User Data\", function () {",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.environment.set(\"userId\", jsonData.aaData[0].UserId);",
+							"    pm.environment.set(\"projectId\", jsonData.aaData[0].ProjectId);",
+							"    pm.environment.set(\"backlogId\", jsonData.aaData[0].BacklogId);",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "862d6937-882f-465a-85ee-12ae5ffb9d54",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/TimesheetRead?WeekStart={{currentDate}}",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"TimeSheet",
+						"TimesheetRead"
+					],
+					"query": [
+						{
+							"key": "WeekStart",
+							"value": "{{currentDate}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TIMESHEET",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7129c2e6-65ac-408a-a9fa-762a14000a73",
+						"exec": [
+							"var color = pm.environment.get(\"color\");",
+							"pm.expect(color).to.eql(\"#F3FDFC\");",
+							"",
+							"switch (pm.globals.get(\"week\")) {",
+							"  case \"ALL\":",
+							"    pm.environment.set(\"monday\", true);",
+							"    pm.environment.set(\"tuesday\", true);",
+							"    pm.environment.set(\"wednesday\", true);",
+							"    pm.environment.set(\"thursday\", true);",
+							"    pm.environment.set(\"friday\", true);",
+							"    break;",
+							"  case \"EXCEPT-FRIDAYS\":",
+							"    pm.environment.set(\"monday\", true);",
+							"    pm.environment.set(\"tuesday\", true);",
+							"    pm.environment.set(\"wednesday\", true);",
+							"    pm.environment.set(\"thursday\", true);",
+							"    pm.environment.set(\"friday\", false);",
+							"    break;",
+							"  case \"FRIDAYS\":",
+							"    pm.environment.set(\"monday\", false);",
+							"    pm.environment.set(\"tuesday\", false);",
+							"    pm.environment.set(\"wednesday\", false);",
+							"    pm.environment.set(\"thursday\", false);",
+							"    pm.environment.set(\"friday\", true);",
+							"    break;",
+							"  default:",
+							"    console.log(\"Sorry, option not allowed\");",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "146626e6-535e-4607-9879-6811730fb4da",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": " */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": " gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": " es-ES,es;q=0.9,en;q=0.8",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": " no-cache",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": " keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Pragma",
+						"value": " no-cache",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": " XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "Id",
+							"value": "undefined",
+							"type": "text"
+						},
+						{
+							"key": "StatusCode",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "DimensionSetId",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "UserId",
+							"value": "{{userId}}",
+							"type": "text"
+						},
+						{
+							"key": "HoursToInvoice",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "ProjectId",
+							"value": "{{projectId}}",
+							"type": "text"
+						},
+						{
+							"key": "BacklogId",
+							"value": "{{backlogId}}",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "{{startDate}}",
+							"type": "text"
+						},
+						{
+							"key": "ByPeriod",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "EndDate",
+							"value": "{{endDate}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[0].Text",
+							"value": "Lun",
+							"type": "text"
+						},
+						{
+							"key": "Days[0].Value",
+							"value": "Monday",
+							"type": "text"
+						},
+						{
+							"key": "Days[0].Selected",
+							"value": "{{monday}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[1].Text",
+							"value": "Mar",
+							"type": "text"
+						},
+						{
+							"key": "Days[1].Value",
+							"value": "Tuesday",
+							"type": "text"
+						},
+						{
+							"key": "Days[1].Selected",
+							"value": "{{tuesday}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[2].Text",
+							"value": "Mier",
+							"type": "text"
+						},
+						{
+							"key": "Days[2].Value",
+							"value": "Wednesday",
+							"type": "text"
+						},
+						{
+							"key": "Days[2].Selected",
+							"value": "{{wednesday}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[3].Text",
+							"value": "Jue",
+							"type": "text"
+						},
+						{
+							"key": "Days[3].Value",
+							"value": "Thursday",
+							"type": "text"
+						},
+						{
+							"key": "Days[3].Selected",
+							"value": "{{thursday}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[4].Text",
+							"value": "Vie",
+							"type": "text"
+						},
+						{
+							"key": "Days[4].Value",
+							"value": "Friday",
+							"type": "text"
+						},
+						{
+							"key": "Days[4].Selected",
+							"value": "{{friday}}",
+							"type": "text"
+						},
+						{
+							"key": "Days[5].Text",
+							"value": "Sab",
+							"type": "text"
+						},
+						{
+							"key": "Days[5].Value",
+							"value": "Saturday",
+							"type": "text"
+						},
+						{
+							"key": "Days[5].Selected",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "Days[6].Text",
+							"value": "Dom",
+							"type": "text"
+						},
+						{
+							"key": "Days[6].Value",
+							"value": "Sunday",
+							"type": "text"
+						},
+						{
+							"key": "Days[6].Selected",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "BillingTypeCode",
+							"value": "B",
+							"type": "text"
+						},
+						{
+							"key": "TimesheetTypeId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "Hours",
+							"value": "{{hours}}",
+							"type": "text"
+						},
+						{
+							"key": "Comment",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "X-Requested-With",
+							"value": "XMLHttpRequest",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/CreateOrUpdateTimeSheet",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"TimeSheet",
+						"CreateOrUpdateTimeSheet"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
