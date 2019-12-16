@@ -236,7 +236,7 @@
 					"query": [
 						{
 							"key": "WeekStart",
-							"value": "{{currentDate}}"
+							"value": "04/11/2019"
 						}
 					]
 				}
