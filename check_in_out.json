@@ -265,7 +265,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"CompanyCode\":\"CAP\",\n\"MovType\":\"{{action}}\",\n\"TimeClockType\":\"WorkingTime\",\n\"Latitude\":\"41.3907285\",\n\"Longitude\":\"2.1745088999999997\"\n}"
+					"raw": "{\n\"CompanyCode\":\"CAP\",\n\"MovType\":\"{{action}}\",\n\"TimeClockType\":\"WorkingTime\",\n\"Latitude\":\"{{latitude}}\",\n\"Longitude\":\"{{longitude}}\"\n}"
 				},
 				"url": {
 					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeClock/AddTimeClock",

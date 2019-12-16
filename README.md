@@ -21,6 +21,17 @@ Run the following command with, replacing the arguments with your personal infor
 ```
 newman run check_in_out.json --global-var username=[EMAIL] --global-var password=[PASSWORD]--global-var action=[IN/OUT]
 ```
+
+NEW!!  
+
+Now you can specify your custom location with the following parameters. If not, it will get the default ones:  
+Latitude: 41.3907285  
+Longitude: 2.1745088999999997  
+
+```
+--global-var latitude=[LATITUDE] --global-var longitude=[LONGITUDE]
+```
+
 The script will detect automatically if it's a working day in your calendar, and if yes, it will perform the check-in/out action.
 ### Timesheet:
 Run the following command with, replacing the arguments with your personal information:
