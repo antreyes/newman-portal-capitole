@@ -222,7 +222,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/TimesheetRead?WeekStart={{currentDate}}",
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/TimesheetRead?WeekStart=04/11/2019",
 					"protocol": "https",
 					"host": [
 						"capitole-ep-prd",
