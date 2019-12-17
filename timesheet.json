@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "a51a2ca5-0509-44ec-9067-7ec70f1d7279",
-		"name": "PORTAL CAPITOLE Timesheet",
+		"_postman_id": "bebc7afc-c9f3-47da-b577-ee8cf01057dc",
+		"name": "PORTAL CAPITOLE Timesheet Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -187,20 +187,17 @@
 			"response": []
 		},
 		{
-			"name": "GET USER DATA",
+			"name": "GET USER ID",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "e07af79d-1cf2-48a1-8f6b-c6be44ac417c",
 						"exec": [
-							"pm.test(\"Get User Data\", function () {",
+							"pm.test(\"Get userID\", function () {",
 							"    ",
 							"    var jsonData = pm.response.json();",
-							"    ",
-							"    pm.environment.set(\"userId\", jsonData.aaData[0].UserId);",
-							"    pm.environment.set(\"projectId\", jsonData.aaData[0].ProjectId);",
-							"    pm.environment.set(\"backlogId\", jsonData.aaData[0].BacklogId);",
+							"    pm.environment.set(\"userId\", jsonData.Id);",
 							"",
 							"});"
 						],
@@ -222,7 +219,65 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/TimesheetRead?WeekStart=04/11/2019",
+					"raw": "https://capitole-ep-prd.azurewebsites.net/Employee/GetEmployeeHeader",
+					"protocol": "https",
+					"host": [
+						"capitole-ep-prd",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"Employee",
+						"GetEmployeeHeader"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PROJECTID AND BACKLOGID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e07af79d-1cf2-48a1-8f6b-c6be44ac417c",
+						"exec": [
+							"pm.test(\"Get projectId and backlogId\", function () {",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    for(var i in jsonData.aaData)",
+							"    {",
+							"        ",
+							"        if (jsonData.aaData[i].Title == \"Horas Laborales\")",
+							"        {",
+							"            pm.environment.set(\"projectId\", jsonData.aaData[i].ProjectId);",
+							"            pm.environment.set(\"backlogId\", jsonData.aaData[i].Id);",
+							"        }",
+							"        ",
+							"    }",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "862d6937-882f-465a-85ee-12ae5ffb9d54",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/WorkLogsList",
 					"protocol": "https",
 					"host": [
 						"capitole-ep-prd",
@@ -231,13 +286,7 @@
 					],
 					"path": [
 						"TimeSheet",
-						"TimesheetRead"
-					],
-					"query": [
-						{
-							"key": "WeekStart",
-							"value": "04/11/2019"
-						}
+						"WorkLogsList"
 					]
 				}
 			},
