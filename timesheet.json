@@ -286,7 +286,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/WorkLogsList",
+					"raw": "https://capitole-ep-prd.azurewebsites.net/TimeSheet/WorkLogsList?iDisplayLength=25",
 					"protocol": "https",
 					"host": [
 						"capitole-ep-prd",
@@ -296,6 +296,12 @@
 					"path": [
 						"TimeSheet",
 						"WorkLogsList"
+					],
+					"query": [
+						{
+							"key": "iDisplayLength",
+							"value": "25"
+						}
 					]
 				}
 			},
